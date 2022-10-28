@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Duende.IdentityServer.Validation;
 using FluentAssertions;
 using Xunit;
+using static Duende.IdentityServer.Validation.License;
 
 namespace UnitTests.Validation;
 
@@ -348,5 +349,21 @@ public class LicenseValidatorTests
             Action func = () => new License();
             func.Should().Throw<Exception>();
         }
+    }
+
+    [Fact]
+    [Trait("Category", Category)]
+    public void default_valid_license_should_be_created()
+    {
+        var defaultLicense = LicenseValidator.CreateValidLicense();
+        defaultLicense.BffFeature.Should().Be(true);
+        defaultLicense.CibaFeature.Should().Be(true);
+        defaultLicense.ClientLimit.Should().Be(null);
+        defaultLicense.DynamicProvidersFeature.Should().Be(true);
+        defaultLicense.Edition.Should().Be(LicenseEdition.Enterprise);
+        defaultLicense.IssuerLimit.Should().Be(null);
+        defaultLicense.KeyManagementFeature.Should().Be(true);
+        defaultLicense.ResourceIsolationFeature.Should().Be(true);
+        defaultLicense.ServerSideSessionsFeature.Should().Be(true);
     }
 }
